@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import { ArrowLeft, Calendar, MapPin, Award, CheckCircle2, Users, Filter, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Award, CheckCircle2, Users, Filter, Clock, QrCode, X } from 'lucide-react';
 
 export default function JadwalKegiatan() {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('Semua');
   const [registeredEvents, setRegisteredEvents] = useState({});
+  const [showQR, setShowQR] = useState(null);
   const role = localStorage.getItem('userRole') || 'siswa/muda';
 
   const filters = ['Semua', 'Latihan', 'Ekspedisi', 'Sosial'];
@@ -145,7 +146,13 @@ export default function JadwalKegiatan() {
                   </div>
 
                   <button 
-                    onClick={() => toggleRegister(event.id)}
+                    onClick={() => {
+                      if (isRegistered) {
+                        setShowQR(event);
+                      } else {
+                        toggleRegister(event.id);
+                      }
+                    }}
                     className="hover-scale"
                     style={{ 
                       width: '100%', 
@@ -164,7 +171,7 @@ export default function JadwalKegiatan() {
                     }}
                   >
                     {isRegistered ? (
-                      <><CheckCircle2 size={20} /> Tiket & QR Code Siap</>
+                      <><QrCode size={20} /> Tampilkan Tiket & QR</>
                     ) : (
                       'Daftar / Ikut Kegiatan'
                     )}
@@ -182,6 +189,24 @@ export default function JadwalKegiatan() {
           )}
         </div>
       </div>
+
+      {/* QR Modal */}
+      {showQR && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+          <div className="animate-slide-up" style={{ background: 'white', color: '#111', padding: '24px', borderRadius: '24px', width: '100%', maxWidth: '340px', textAlign: 'center', position: 'relative' }}>
+            <button onClick={() => setShowQR(null)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}>
+              <X size={24} />
+            </button>
+            <h3 style={{ margin: '0 0 8px 0', color: '#111' }}>E-Tiket Kegiatan</h3>
+            <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#666' }}>{showQR.title}</p>
+            <div style={{ background: '#f8f9fa', padding: '16px', borderRadius: '16px', marginBottom: '24px', display: 'inline-block' }}>
+              <QrCode size={150} color="#111" />
+            </div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '0 0 16px 0' }}>Tunjukkan QR Code ini kepada panitia saat kedatangan untuk mendapatkan +{showQR.points} Poin.</p>
+            <button onClick={() => toggleRegister(showQR.id) || setShowQR(null)} style={{ background: 'transparent', border: 'none', color: '#ef4444', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>Batal Ikut Kegiatan</button>
+          </div>
+        </div>
+      )}
 
       <Navigation role={role} />
     </div>

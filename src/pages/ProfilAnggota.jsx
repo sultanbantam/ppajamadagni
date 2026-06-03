@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { ArrowLeft, Award, Settings, QrCode, Map, Compass, Leaf, Shield, History, MapPin, Share2, Camera, MessageCircle, Send, MessageSquare, Users, Link } from 'lucide-react';
+import logoUrl from '../assets/logo.png';
 
 export default function ProfilAnggota() {
   const navigate = useNavigate();
@@ -58,13 +59,13 @@ export default function ProfilAnggota() {
   ];
 
   const history = isMentor ? [
-    { id: 1, title: 'Validasi Tugas Raka', date: 'Hari ini', points: '+20 Pts' },
-    { id: 2, title: 'Validasi Kuis Budi', date: 'Hari ini', points: '+15 Pts' },
-    { id: 3, title: 'Menjadi Pemateri Navigasi', date: '05 Okt 2026', points: '+200 Pts' },
+    { id: 1, title: 'Validasi Tugas Raka', date: 'Hari ini', points: 20 },
+    { id: 2, title: 'Validasi Kuis Budi', date: 'Hari ini', points: 15 },
+    { id: 3, title: 'Menjadi Pemateri Navigasi', date: '05 Okt 2026', points: 200 },
   ] : [
-    { id: 1, title: 'Latihan Fisik Saparua', date: '07 Okt 2026', points: '+100 Pts' },
-    { id: 2, title: 'Kuis Navigasi Dasar', date: '05 Okt 2026', points: '+50 Pts' },
-    { id: 3, title: 'Menonton Video Sejarah', date: '01 Okt 2026', points: '+50 Pts' },
+    { id: 1, title: 'Latihan Fisik Saparua', date: '07 Okt 2026', points: 100 },
+    { id: 2, title: 'Kuis Navigasi Dasar', date: '05 Okt 2026', points: 50 },
+    { id: 3, title: 'Menonton Video Sejarah', date: '01 Okt 2026', points: 50 },
   ];
 
   return (
@@ -103,7 +104,7 @@ export default function ProfilAnggota() {
                 <h2 style={{ margin: 0, fontSize: 'var(--font-md)', opacity: 0.9 }}>{isMentor ? 'KARTU TANDA ANGGOTA TETAP' : 'KARTU TANDA ANGGOTA MUDA'}</h2>
                 <h3 style={{ margin: '4px 0 0 0', fontSize: 'var(--font-sm)', opacity: 0.8 }}>JAMADAGNI SMAN 3 BANDUNG</h3>
               </div>
-              <img src="/logo.png" alt="Logo Jamadagni" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+              <img src={logoUrl} alt="Logo Jamadagni" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--spacing-md)' }}>
@@ -161,8 +162,8 @@ export default function ProfilAnggota() {
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--spacing-sm)' }}>
             {badges.map(badge => (
-              <div key={badge.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: badge.earned ? 1 : 0.4 }}>
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: badge.earned ? `${badge.color}20` : 'var(--color-surface)', border: `2px solid ${badge.earned ? badge.color : 'var(--color-border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: badge.earned ? badge.color : 'var(--color-text-muted)', marginBottom: '8px' }}>
+              <div key={badge.id} onClick={() => alert(`Lencana ${badge.name}: ${badge.earned ? 'Telah diraih!' : 'Belum diraih. Terus selesaikan misi!'}`)} className="hover-scale" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', opacity: badge.earned ? 1 : 0.4, cursor: 'pointer' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: badge.earned ? `${badge.color}20` : 'var(--color-surface)', border: `2px solid ${badge.earned ? badge.color : 'var(--color-border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: badge.earned ? badge.color : 'var(--color-text-muted)' }}>
                   {badge.icon}
                 </div>
                 <span style={{ fontSize: '10px', textAlign: 'center', fontWeight: badge.earned ? 'bold' : 'normal', color: 'var(--color-text)' }}>
@@ -174,21 +175,21 @@ export default function ProfilAnggota() {
         </section>
 
         {/* Histori Kegiatan */}
-        <section className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <section className="animate-slide-up" style={{ animationDelay: '0.3s', marginBottom: 'var(--spacing-xl)' }}>
           <h2 style={{ fontSize: 'var(--font-lg)', marginBottom: 'var(--spacing-sm)', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <History size={20} /> Histori Kegiatan
           </h2>
-          <div className="glass-panel" style={{ padding: 'var(--spacing-sm)' }}>
+          <div className="glass-panel" style={{ padding: '0' }}>
             {history.map((item, index) => (
-              <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderBottom: index < history.length - 1 ? '1px solid var(--color-border)' : 'none' }}>
+              <div key={item.id} onClick={() => alert(`Detail Kegiatan: ${item.title} pada ${item.date}`)} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: index < history.length - 1 ? '1px solid var(--color-border)' : 'none', cursor: 'pointer' }}>
                 <div>
                   <h4 style={{ margin: '0 0 4px 0', fontSize: 'var(--font-sm)' }}>{item.title}</h4>
                   <span className="text-xs text-muted">{item.date}</span>
                 </div>
-                <strong style={{ color: '#eab308', fontSize: 'var(--font-sm)' }}>{item.points}</strong>
+                <strong style={{ color: '#eab308', fontSize: 'var(--font-sm)' }}>+{item.points} Pts</strong>
               </div>
             ))}
-            <button style={{ width: '100%', padding: '12px', background: 'none', border: 'none', borderTop: '1px solid var(--color-border)', color: 'var(--color-primary)', fontWeight: 'bold', fontSize: 'var(--font-sm)', cursor: 'pointer', marginTop: '4px' }}>
+            <button onClick={() => alert('Memuat seluruh daftar histori kegiatan...')} style={{ width: '100%', padding: '12px', background: 'none', border: 'none', borderTop: '1px solid var(--color-border)', color: 'var(--color-primary)', fontWeight: 'bold', fontSize: 'var(--font-sm)', cursor: 'pointer', marginTop: '4px' }}>
               Lihat Semua Histori
             </button>
           </div>
